@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPI QR Generator</title>
+
+  <!-- Fonts and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Base Styling */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #e6f0f8;
+      color: #2d2d2d;
+    }
+
+    /* Title and Description */
+    .page-title {
+      text-align: center;
+      font-size: 2.8rem;
+      font-weight: 600;
+      margin-top: 40px;
+      color: #2c3e50;
+    }
+
+    .description {
+      max-width: 800px;
+      margin: 20px auto;
+      font-size: 1.1rem;
+      color: #444;
+      text-align: center;
+      padding: 0 20px;
+      line-height: 1.6;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #fefefe;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Section */
+    .form-section {
+      background: #f0f8ff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    /* Download Button */
+    .download-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* QR Section */
+    .qr-section {
+      text-align: center;
+    }
+
+    .qr-placeholder {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f9fcff;
+    }
+
+    .qr-details h2 {
+      font-size: 1.8rem;
+      margin: 10px 0 5px;
+      color: #2c3e50;
+    }
+
+    .qr-details p {
+      margin: 4px 0;
+      color: #555;
+    }
+
+    .apps-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .app-icon {
+      padding: 10px 20px;
+      background-color: #f1f3f5;
+      border-radius: 8px;
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Title and Description -->
+  <div class="page-title">UPI QR Code Generator</div>
+  <div class="description">
+    Create your own UPI QR code instantly!<br>
+    Just enter your merchant name, UPI ID, and amount.<br>
+    Generate a QR that works with all UPI-enabled apps.<br>
+    Download and print or share your code effortlessly.<br>
+    Easy, secure, and 100% free for personal or business use.<br>
+  </div>
+
+  <!-- Main Generator Container -->
+  <div class="container">
+    <div class="generator">
+      <!-- Input Form -->
+      <div class="form-section">
+        <div class="form-group">
+          <label><i class="fas fa-store"></i> Merchant Name</label>
+          <input type="text" id="merchant-name" placeholder="Your business name" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-wallet"></i> UPI ID</label>
+          <input type="text" id="upi-id" placeholder="username@upi" />
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-rupee-sign"></i> Amount (₹)</label>
+          <input type="number" id="amount" placeholder="Optional" />
+        </div>
+
+        <button id="download-btn" class="download-btn" disabled>
+          <i class="fas fa-download"></i> Download QR Code
+        </button>
+      </div>
+
+      <!-- QR Display -->
+      <div class="qr-section">
+        <div id="qr-code" class="qr-placeholder">
+          <div class="hint"><i class="fas fa-qrcode"></i> Enter details to generate QR</div>
+        </div>
+
+        <div class="qr-details">
+          <h2 id="display-name">MERCHANT NAME</h2>
+          <p id="display-upi">merchant@upi</p>
+          <p class="instruction"><i class="fas fa-mobile-alt"></i> Scan and pay with any UPI app</p>
+        </div>
+
+        <div class="apps-grid">
+          <div class="app-icon"><i class="fab fa-google-pay"></i> Google Pay</div>
+          <div class="app-icon"><i class="fas fa-mobile"></i> PhonePe</div>
+          <div class="app-icon"><i class="fas fa-wallet"></i> Paytm</div>
+          <div class="app-icon"><i class="fas fa-qrcode"></i> BHIM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Scripts -->
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
