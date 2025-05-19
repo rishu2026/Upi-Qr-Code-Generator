@@ -3,34 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UPI QR Code Generator | Instant & Easy</title>
-  <meta name="description" content="Generate free UPI QR codes for your business." />
-  <meta name="keywords" content="UPI QR, QR Code Generator, UPI Payment">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <title>UPI QR Code Generator</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="generator">
       <div class="form-section">
         <div class="form-group">
-          <label><i class="fas fa-store"></i> Merchant Name</label>
-          <input type="text" id="merchant-name" placeholder="Your business name" />
+          <label>Merchant Name</label>
+          <input type="text" id="merchant-name" placeholder="Your name or shop" />
         </div>
         <div class="form-group">
-          <label><i class="fas fa-wallet"></i> UPI ID</label>
-          <input type="text" id="upi-id" placeholder="username@upi" />
+          <label>UPI ID</label>
+          <input type="text" id="upi-id" placeholder="example@upi" />
         </div>
         <div class="form-group">
-          <label><i class="fas fa-rupee-sign"></i> Amount (₹)</label>
-          <input type="number" id="amount" placeholder="Optional" />
+          <label>Amount (Optional)</label>
+          <input type="number" id="amount" placeholder="Enter amount" />
         </div>
-        <button id="download-btn" class="download-btn" disabled>
-          <i class="fas fa-download"></i> Download QR Code
-        </button>
+        <button id="download-btn" class="download-btn" disabled>Download QR Code</button>
       </div>
 
       <div class="qr-section">
@@ -39,24 +32,26 @@
         </div>
 
         <div class="qr-details">
-          <h1 id="display-name">MERCHANT NAME</h1>
-          <h3 id="display-upi">merchant@upi</h3>
-          <p class="instruction"><i class="fas fa-mobile-alt"></i> Scan this QR to pay from any UPI app</p>
+          <h2 id="display-name">MERCHANT NAME</h2>
+          <p id="display-upi">merchant@upi</p>
+          <p class="instruction">Scan this QR to pay from any UPI app</p>
+        </div>
 
-          <div class="apps-grid">
-            <div class="app-icon"><i class="fas fa-mobile-alt"></i> PhonePe</div>
-            <div class="app-icon"><i class="fas fa-wallet"></i> Paytm</div>
-            <div class="app-icon"><i class="fas fa-qrcode"></i> BHIM</div>
-            <div class="app-icon"><i class="fab fa-amazon"></i> Amazon Pay</div>
-          </div>
+        <div class="apps-grid">
+          <div class="app-icon">Google Pay</div>
+          <div class="app-icon">PhonePe</div>
+          <div class="app-icon">Paytm</div>
+          <div class="app-icon">BHIM</div>
+          <div class="app-icon">Amazon Pay</div>
+        </div>
 
-          <p class="footer-text">Hare Shree Krishna 🙏 Radhe Radhe</p>
+        <div class="footer">
+          Jai Shree Krishna Radhe Radhe
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
