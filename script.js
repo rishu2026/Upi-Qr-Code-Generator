@@ -1,5 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Get all elements
+document.addEventListener('DOMContentLoaded', function () {
     const merchantName = document.getElementById('merchant-name');
     const upiId = document.getElementById('upi-id');
     const amount = document.getElementById('amount');
@@ -7,16 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const qrCodeDiv = document.getElementById('qr-code');
     const displayName = document.getElementById('display-name');
     const displayUpi = document.getElementById('display-upi');
-    
+
     let qrCode = null;
 
-    // 2. QR Generation
     function generateQR() {
         const name = merchantName.value.trim() || "MERCHANT";
         const upi = upiId.value.trim();
         const amt = amount.value.trim();
 
-        // Clear previous QR
         qrCodeDiv.innerHTML = '';
         downloadBtn.disabled = true;
 
@@ -27,11 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Generate UPI link
         let upiLink = `upi://pay?pa=${upi}&pn=${encodeURIComponent(name)}`;
         if (amt) upiLink += `&am=${parseFloat(amt).toFixed(2)}`;
 
-        // Create QR code
         try {
             qrCode = new QRCode(qrCodeDiv, {
                 text: upiLink,
@@ -51,60 +46,78 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 3. BULLETPROOF Download Function
-    downloadBtn.addEventListener('click', function() {
+    downloadBtn.addEventListener('click', function () {
         try {
             const qrCanvas = document.querySelector('#qr-code canvas');
             if (!qrCanvas) {
                 throw new Error('Please generate a QR code first');
             }
 
-            // Create a new temporary canvas
             const tempCanvas = document.createElement('canvas');
             const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = 300;
-            tempCanvas.height = 400;
-            
-            // Draw white background
+            tempCanvas.width = 600;
+            tempCanvas.height = 650;
+
+            // Background
             tempCtx.fillStyle = 'white';
             tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-            
-            // Draw merchant info
-            tempCtx.fillStyle = '#5e35b1';
-            tempCtx.font = 'bold 20px Arial';
+
+            // Merchant name
+            tempCtx.fillStyle = '#222';
+            tempCtx.font = 'bold 28px Arial';
             tempCtx.textAlign = 'center';
-            tempCtx.fillText(displayName.textContent, 150, 40);
-            
-            tempCtx.fillStyle = '#666';
-            tempCtx.font = '16px Arial';
-            tempCtx.fillText(displayUpi.textContent, 150, 70);
-            
-            // Draw QR code (centered)
-            tempCtx.drawImage(qrCanvas, 50, 100, 200, 200);
-            
-            // Draw instruction text
-            tempCtx.fillStyle = '#333';
-            tempCtx.font = '500 16px Arial';
-            tempCtx.fillText('Scan with any UPI app', 150, 340);
-            
-            // Convert to image and download
-            const upiId = displayUpi.textContent.trim();
-// e.g., "736191@upi"
-const upiPart = upiId.split('@')[0]; // e.g., "736191"
+            tempCtx.fillText(displayName.textContent, tempCanvas.width / 2, 60);
 
-const link = document.createElement('a');
-link.href = tempCanvas.toDataURL('image/png');
-link.download = `${upiPart}.png`; // filename: "736191.png"
-link.click();
+            // UPI ID
+            tempCtx.fillStyle = '#555';
+            tempCtx.font = '20px Arial';
+            tempCtx.fillText(displayUpi.textContent, tempCanvas.width / 2, 100);
 
+            // QR code
+            tempCtx.drawImage(qrCanvas, 200, 120, 200, 200);
 
+            // Instruction
+            tempCtx.fillStyle = '#000';
+            tempCtx.font = '18px Arial';
+            tempCtx.fillText('Scan and pay with any BHIM UPI app', tempCanvas.width / 2, 350);
+
+            // Icons for GPay, PhonePe, Paytm, Amazon Pay (fake, drawn as rectangles)
+            const icons = ['GPay', 'PhonePe', 'Paytm', 'Amazon Pay'];
+            const startX = 30;
+            const iconY = 400;
+            const iconWidth = 120;
+            const iconHeight = 50;
+            const spacing = 30;
+
+            icons.forEach((icon, index) => {
+                const x = startX + index * (iconWidth + spacing);
+                tempCtx.fillStyle = '#f2f2f2';
+                tempCtx.fillRect(x, iconY, iconWidth, iconHeight);
+
+                tempCtx.fillStyle = '#333';
+                tempCtx.font = 'bold 16px Arial';
+                tempCtx.textAlign = 'center';
+                tempCtx.textBaseline = 'middle';
+                tempCtx.fillText(icon, x + iconWidth / 2, iconY + iconHeight / 2);
+            });
+
+            // Footer
+            tempCtx.fillStyle = '#888';
+            tempCtx.font = '14px Arial';
+            tempCtx.fillText('Create your own UPI QR code at yoursite.com', tempCanvas.width / 2, 620);
+
+            // Download logic
+            const upiPart = displayUpi.textContent.split('@')[0];
+            const link = document.createElement('a');
+            link.href = tempCanvas.toDataURL('image/png');
+            link.download = `${upiPart}.png`;
+            link.click();
         } catch (error) {
             console.error("Download Error:", error);
             alert('Download failed. Please try again in Chrome/Firefox.');
         }
     });
 
-    // 4. Auto-generate on input
     [merchantName, upiId, amount].forEach(input => {
         input.addEventListener('input', generateQR);
     });
