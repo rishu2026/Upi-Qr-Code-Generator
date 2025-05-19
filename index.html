@@ -1,57 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UPI QR Code Generator</title>
-  <link rel="stylesheet" href="style.css"/>
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPI QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .input-group {
+            margin-bottom: 10px;
+            width: 300px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
+        }
+        #download-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #download-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: red;
+            display: none;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #qr-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+        #merchant-name-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        #upi-id-display {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        #scan-message {
+            font-size: 14px;
+            color: #333;
+            margin: 10px 0;
+        }
+        #logos {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        #logos img {
+            height: 30px;
+        }
+        #footer-link {
+            font-size: 12px;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="generator">
-      <div class="form-section">
-        <div class="form-group">
-          <label>Merchant Name</label>
-          <input type="text" id="merchant-name" placeholder="Your name or shop" />
-        </div>
-        <div class="form-group">
-          <label>UPI ID</label>
-          <input type="text" id="upi-id" placeholder="example@upi" />
-        </div>
-        <div class="form-group">
-          <label>Amount (Optional)</label>
-          <input type="number" id="amount" placeholder="Enter amount" />
-        </div>
-        <button id="download-btn" class="download-btn" disabled>Download QR Code</button>
-      </div>
-
-      <div class="qr-section">
-        <div id="qr-code" class="qr-placeholder">
-          <div class="hint"><i class="fas fa-qrcode"></i> Enter details to generate QR</div>
-        </div>
-
-        <div class="qr-details">
-          <h2 id="display-name">MERCHANT NAME</h2>
-          <p id="display-upi">merchant@upi</p>
-          <p class="instruction">Scan this QR to pay from any UPI app</p>
-        </div>
-
-        <div class="apps-grid">
-          <div class="app-icon">Google Pay</div>
-          <div class="app-icon">PhonePe</div>
-          <div class="app-icon">Paytm</div>
-          <div class="app-icon">BHIM</div>
-          <div class="app-icon">Amazon Pay</div>
-        </div>
-
-        <div class="footer">
-          Jai Shree Krishna Radhe Radhe
-        </div>
-      </div>
+    <div class="input-group">
+        <label for="merchant-name">Merchant Name:</label>
+        <input type="text" id="merchant-name" placeholder="Enter Merchant Name">
     </div>
-  </div>
+    <div class="input-group">
+        <label for="upi-id">UPI ID:</label>
+        <input type="text" id="upi-id" placeholder="merchant@upi" required>
+    </div>
+    <div class="input-group">
+        <label for="amount">Amount (Optional):</label>
+        <input type="number" id="amount" placeholder="Enter Amount">
+    </div>
+    <button id="download-btn" disabled>Download QR Code</button>
+    <div id="qr-code"></div>
 
-  <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="your-script.js"></script>
 </body>
 </html>
