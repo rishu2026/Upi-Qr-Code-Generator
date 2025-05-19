@@ -47,76 +47,86 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     downloadBtn.addEventListener('click', function () {
-        try {
-            const qrCanvas = document.querySelector('#qr-code canvas');
-            if (!qrCanvas) {
-                throw new Error('Please generate a QR code first');
-            }
+    try {
+        const qrCanvas = document.querySelector('#qr-code canvas');
+        if (!qrCanvas) throw new Error('Please generate a QR code first');
 
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = 600;
-            tempCanvas.height = 650;
+        const tempCanvas = document.createElement('canvas');
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCanvas.width = 600;
+        tempCanvas.height = 850;
 
-            // Background
-            tempCtx.fillStyle = 'white';
-            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+        // White background
+        tempCtx.fillStyle = '#ffffff';
+        tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
 
-            // Merchant name
-            tempCtx.fillStyle = '#222';
-            tempCtx.font = 'bold 28px Arial';
+        // Top rounded rectangle
+        tempCtx.fillStyle = '#f1f3f6';
+        tempCtx.fillRect(0, 0, 600, 80);
+
+        // Merchant Title
+        tempCtx.fillStyle = '#333';
+        tempCtx.font = 'bold 24px Arial';
+        tempCtx.textAlign = 'center';
+        tempCtx.fillText('MERCHANT  NAME', tempCanvas.width / 2, 50);
+
+        // QR Code
+        tempCtx.drawImage(qrCanvas, 200, 100, 200, 200);
+
+        // Display UPI ID
+        tempCtx.fillStyle = '#444';
+        tempCtx.font = '18px Arial';
+        tempCtx.fillText(displayUpi.textContent, tempCanvas.width / 2, 330);
+
+        // Instruction
+        tempCtx.fillStyle = '#000';
+        tempCtx.font = '16px Arial';
+        tempCtx.fillText('Scan and pay with any BHIM UPI app', tempCanvas.width / 2, 370);
+
+        // BHIM/UPI Logos (text placeholders for simplicity)
+        tempCtx.font = 'bold 20px Arial';
+        tempCtx.fillStyle = '#000';
+        tempCtx.fillText('BHIM', 260, 410);
+        tempCtx.fillText('UPI', 340, 410);
+
+        // Payment App Logos (GPay, PhonePe, Paytm, Amazon Pay)
+        const icons = ['G Pay', 'PhonePe', 'Paytm', 'Amazon Pay'];
+        const startX = 30;
+        const iconY = 460;
+        const iconWidth = 120;
+        const iconHeight = 50;
+        const spacing = 30;
+
+        icons.forEach((icon, index) => {
+            const x = startX + index * (iconWidth + spacing);
+            tempCtx.fillStyle = '#e0e0e0';
+            tempCtx.fillRect(x, iconY, iconWidth, iconHeight);
+
+            tempCtx.fillStyle = '#333';
+            tempCtx.font = 'bold 16px Arial';
             tempCtx.textAlign = 'center';
-            tempCtx.fillText(displayName.textContent, tempCanvas.width / 2, 60);
+            tempCtx.textBaseline = 'middle';
+            tempCtx.fillText(icon, x + iconWidth / 2, iconY + iconHeight / 2);
+        });
 
-            // UPI ID
-            tempCtx.fillStyle = '#555';
-            tempCtx.font = '20px Arial';
-            tempCtx.fillText(displayUpi.textContent, tempCanvas.width / 2, 100);
+        // Footer
+        tempCtx.fillStyle = '#888';
+        tempCtx.font = '14px Arial';
+        tempCtx.textAlign = 'center';
+        tempCtx.fillText('Create your own UPI QR code at www.labnol.org/upi', tempCanvas.width / 2, 820);
 
-            // QR code
-            tempCtx.drawImage(qrCanvas, 200, 120, 200, 200);
+        // Download logic
+        const upiPart = displayUpi.textContent.split('@')[0];
+        const link = document.createElement('a');
+        link.href = tempCanvas.toDataURL('image/png');
+        link.download = `${upiPart}.png`;
+        link.click();
+    } catch (error) {
+        console.error("Download Error:", error);
+        alert('Download failed. Please try again in Chrome/Firefox.');
+    }
+});
 
-            // Instruction
-            tempCtx.fillStyle = '#000';
-            tempCtx.font = '18px Arial';
-            tempCtx.fillText('Scan and pay with any BHIM UPI app', tempCanvas.width / 2, 350);
-
-            // Icons for GPay, PhonePe, Paytm, Amazon Pay (fake, drawn as rectangles)
-            const icons = ['GPay', 'PhonePe', 'Paytm', 'Amazon Pay'];
-            const startX = 30;
-            const iconY = 400;
-            const iconWidth = 120;
-            const iconHeight = 50;
-            const spacing = 30;
-
-            icons.forEach((icon, index) => {
-                const x = startX + index * (iconWidth + spacing);
-                tempCtx.fillStyle = '#f2f2f2';
-                tempCtx.fillRect(x, iconY, iconWidth, iconHeight);
-
-                tempCtx.fillStyle = '#333';
-                tempCtx.font = 'bold 16px Arial';
-                tempCtx.textAlign = 'center';
-                tempCtx.textBaseline = 'middle';
-                tempCtx.fillText(icon, x + iconWidth / 2, iconY + iconHeight / 2);
-            });
-
-            // Footer
-            tempCtx.fillStyle = '#888';
-            tempCtx.font = '14px Arial';
-            tempCtx.fillText('Create your own UPI QR code at yoursite.com', tempCanvas.width / 2, 620);
-
-            // Download logic
-            const upiPart = displayUpi.textContent.split('@')[0];
-            const link = document.createElement('a');
-            link.href = tempCanvas.toDataURL('image/png');
-            link.download = `${upiPart}.png`;
-            link.click();
-        } catch (error) {
-            console.error("Download Error:", error);
-            alert('Download failed. Please try again in Chrome/Firefox.');
-        }
-    });
 
     [merchantName, upiId, amount].forEach(input => {
         input.addEventListener('input', generateQR);
