@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             qrCode = new QRCode(qrCodeDiv, {
                 text: upiLink,
-                width: 300,
-                height: 300,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
+                width: 250,
+                height: 250,
+                colorDark: "#ffffff",
+                colorLight: "#000000",
                 correctLevel: QRCode.CorrectLevel.H
             });
 
@@ -51,85 +51,71 @@ document.addEventListener('DOMContentLoaded', function () {
             const qrCanvas = document.querySelector('#qr-code canvas');
             if (!qrCanvas) throw new Error('Please generate a QR code first');
 
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = 600;
-            tempCanvas.height = 780;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = 500;
+            canvas.height = 600;
 
             // Background
-            tempCtx.fillStyle = '#ffffff';
-            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
-            // Header
-            tempCtx.fillStyle = '#e3f2fd';
-            tempCtx.fillRect(0, 0, 600, 70);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Merchant Name
-            tempCtx.fillStyle = '#1a237e';
-            tempCtx.font = 'bold 28px Arial';
-            tempCtx.textAlign = 'center';
-            tempCtx.fillText('MERCHANT  NAME', tempCanvas.width / 2, 45);
+            ctx.font = 'bold 24px Orbitron';
+            ctx.fillStyle = '#00ffff';
+            ctx.textAlign = 'center';
+            ctx.fillText(displayName.textContent, canvas.width / 2, 50);
 
             // QR Code
-            tempCtx.drawImage(qrCanvas, 150, 90, 300, 300);
+            ctx.drawImage(qrCanvas, 125, 70, 250, 250);
 
             // UPI ID
-            tempCtx.fillStyle = '#424242';
-            tempCtx.font = '20px Arial';
-            tempCtx.fillText(displayUpi.textContent, tempCanvas.width / 2, 420);
+            ctx.font = '16px Orbitron';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(displayUpi.textContent, canvas.width / 2, 340);
 
             // Instruction
-            tempCtx.fillStyle = '#000000';
-            tempCtx.font = '18px Arial';
-            tempCtx.fillText('Scan and pay with any BHIM UPI app', tempCanvas.width / 2, 460);
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#aaaaaa';
+            ctx.fillText('Scan and pay with any BHIM UPI app', canvas.width / 2, 370);
 
-            // BHIM / UPI Logo (colored text)
-            tempCtx.font = 'bold 22px Arial';
-            tempCtx.fillStyle = '#ff6f00'; // BHIM orange
-            tempCtx.fillText('BHIM', 270, 495);
-            tempCtx.fillStyle = '#43a047'; // UPI green
-            tempCtx.fillText('UPI', 330, 495);
-
-            // Colored app boxes
+            // UPI Icons
             const icons = [
-                { name: 'GPay', color: '#4285F4' },
-                { name: 'PhonePe', color: '#673AB7' },
-                { name: 'Paytm', color: '#0033cc' },
-                { name: 'Amazon Pay', color: '#ff9900' }
+                { text: 'GPay', color: '#4285F4' },
+                { text: 'PhonePe', color: '#5f259f' },
+                { text: 'Paytm', color: '#0033cc' },
+                { text: 'Amazon Pay', color: '#ff9900' }
             ];
+            const startX = 35;
+            const y = 400;
+            const iconW = 100, iconH = 40;
+            const gap = 15;
 
-            const startX = 30;
-            const iconY = 540;
-            const iconWidth = 120;
-            const iconHeight = 50;
-            const spacing = 30;
+            icons.forEach((icon, i) => {
+                const x = startX + i * (iconW + gap);
+                ctx.fillStyle = icon.color;
+                ctx.fillRect(x, y, iconW, iconH);
 
-            icons.forEach((icon, index) => {
-                const x = startX + index * (iconWidth + spacing);
-                tempCtx.fillStyle = icon.color;
-                tempCtx.fillRect(x, iconY, iconWidth, iconHeight);
-
-                tempCtx.fillStyle = '#fff';
-                tempCtx.font = 'bold 16px Arial';
-                tempCtx.textAlign = 'center';
-                tempCtx.textBaseline = 'middle';
-                tempCtx.fillText(icon.name, x + iconWidth / 2, iconY + iconHeight / 2);
+                ctx.font = 'bold 14px Arial';
+                ctx.fillStyle = '#fff';
+                ctx.fillText(icon.text, x + iconW / 2, y + 25);
             });
 
-            // Footer
-            tempCtx.fillStyle = '#d32f2f';
-            tempCtx.font = 'bold 20px Arial';
-            tempCtx.fillText('🙏 Radhe Radhe 🙏', tempCanvas.width / 2, 730);
+            // Radhe Radhe
+            ctx.font = 'bold 18px Arial';
+            ctx.fillStyle = '#ff4d4d';
+            ctx.fillText('🙏 Radhe Radhe 🙏', canvas.width / 2, 520);
 
-            // Download logic
+            // Download
             const upiPart = displayUpi.textContent.split('@')[0];
             const link = document.createElement('a');
-            link.href = tempCanvas.toDataURL('image/png');
-            link.download = `${upiPart}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.download = `${upiPart}_neonQR.png`;
             link.click();
-        } catch (error) {
-            console.error("Download Error:", error);
-            alert('Download failed. Please try again in Chrome/Firefox.');
+        } catch (err) {
+            alert('Download failed.');
+            console.error(err);
         }
     });
 
