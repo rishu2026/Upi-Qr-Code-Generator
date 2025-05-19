@@ -88,10 +88,14 @@ document.addEventListener('DOMContentLoaded', function() {
             tempCtx.fillText('Scan with any UPI app', 150, 340);
             
             // Convert to image and download
-            const link = document.createElement('a');
-            link.href = tempCanvas.toDataURL('image/png');
-            link.download = `UPI_${displayName.textContent.replace(/[^a-z0-9]/gi, '_')}.png`;
-            link.click();
+            const upiId = displayName.textContent.trim(); // assuming this holds "736191@upi"
+const namePart = upiId.split('@')[0]; // gets "736191"
+
+const link = document.createElement('a');
+link.href = tempCanvas.toDataURL('image/png');
+link.download = `${namePart}.png`; // results in "736191.png"
+link.click();
+
         } catch (error) {
             console.error("Download Error:", error);
             alert('Download failed. Please try again in Chrome/Firefox.');
