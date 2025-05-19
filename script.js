@@ -88,7 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
             tempCtx.fillText('Scan with any UPI app', 150, 340);
             
             // Convert to image and download
-            const upiId = displayName.textContent.trim(); // e.g., "736191@upi"
+            const upiId = displayUpi.textContent.trim();
+// e.g., "736191@upi"
 const upiPart = upiId.split('@')[0]; // e.g., "736191"
 
 const link = document.createElement('a');
