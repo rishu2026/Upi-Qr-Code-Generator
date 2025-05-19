@@ -50,13 +50,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Use QRCode.js to generate the QR code
             qrCode = new QRCode(qrCanvas, {
-                text: upiLink,
-                width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
+  text: upiLink,
+  width: 300,        // Increased from 200
+  height: 300,       // Increased from 200
+  colorDark: "#000000",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.H
+});
+
 
             // Update displayed information
             displayName.textContent = name.toUpperCase();
