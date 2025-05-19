@@ -1,3 +1,4 @@
+<script>
 document.addEventListener('DOMContentLoaded', function () {
     const merchantName = document.getElementById('merchant-name');
     const upiId = document.getElementById('upi-id');
@@ -30,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             qrCode = new QRCode(qrCodeDiv, {
                 text: upiLink,
-                width: 300,
-                height: 300,
+                width: 350,
+                height: 350,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
@@ -55,64 +56,64 @@ document.addEventListener('DOMContentLoaded', function () {
             const ctx = canvas.getContext('2d');
 
             canvas.width = 700;
-            canvas.height = 800;
+            canvas.height = 900;
 
-            // White background
+            // Light background
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Merchant Name
-            ctx.font = 'bold 36px Arial';
-            ctx.fillStyle = '#1e1e1e';
+            ctx.font = 'bold 36px Orbitron';
+            ctx.fillStyle = '#000000';
             ctx.textAlign = 'center';
-            ctx.fillText(displayName.textContent, canvas.width / 2, 60);
+            ctx.fillText(displayName.textContent, canvas.width / 2, 70);
 
             // QR Code
-            ctx.drawImage(qrCanvas, 200, 90, 300, 300);
+            ctx.drawImage(qrCanvas, 175, 100, 350, 350);
 
             // UPI ID
-            ctx.font = 'bold 26px Arial';
+            ctx.font = '24px Orbitron';
             ctx.fillStyle = '#333333';
-            ctx.fillText(displayUpi.textContent, canvas.width / 2, 420);
+            ctx.fillText(displayUpi.textContent, canvas.width / 2, 480);
 
             // Instruction
-            ctx.font = '18px Arial';
-            ctx.fillStyle = '#666666';
-            ctx.fillText('Scan and pay using any UPI app', canvas.width / 2, 460);
+            ctx.font = '20px Arial';
+            ctx.fillStyle = '#555';
+            ctx.fillText('Scan and pay with any BHIM UPI app', canvas.width / 2, 520);
 
-            // App Icons (color blocks with labels)
+            // Logos (Optional: Add real image logos if desired)
+
+            // Payment App Icons (text boxes)
             const icons = [
                 { text: 'GPay', color: '#4285F4' },
                 { text: 'PhonePe', color: '#5f259f' },
                 { text: 'Paytm', color: '#0033cc' },
                 { text: 'Amazon Pay', color: '#ff9900' }
             ];
-            const startX = 70;
-            const y = 500;
+            const startX = 60;
+            const y = 560;
             const iconW = 130, iconH = 50;
-            const gap = 30;
+            const gap = 20;
 
             icons.forEach((icon, i) => {
                 const x = startX + i * (iconW + gap);
                 ctx.fillStyle = icon.color;
-                ctx.roundRect(x, y, iconW, iconH, 10);
-                ctx.fill();
-
+                ctx.fillRect(x, y, iconW, iconH);
                 ctx.font = 'bold 18px Arial';
-                ctx.fillStyle = '#ffffff';
+                ctx.fillStyle = '#fff';
                 ctx.fillText(icon.text, x + iconW / 2, y + 32);
             });
 
-            // Radhe Radhe
-            ctx.font = 'bold 26px Arial';
-            ctx.fillStyle = '#ff4d4d';
-            ctx.fillText('🙏 Radhe Radhe 🙏', canvas.width / 2, 700);
+            // Footer Note
+            ctx.font = 'bold 24px Arial';
+            ctx.fillStyle = '#e60000';
+            ctx.fillText('🙏 Radhe Radhe 🙏', canvas.width / 2, 850);
 
-            // Download Image
+            // Download
             const upiPart = displayUpi.textContent.split('@')[0];
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/png');
-            link.download = `${upiPart}_cleanQR.png`;
+            link.download = `${upiPart}_QRCode.png`;
             link.click();
         } catch (err) {
             alert('Download failed.');
@@ -120,22 +121,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Draw rounded rectangles (helper)
-    CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius) {
-        this.beginPath();
-        this.moveTo(x + radius, y);
-        this.lineTo(x + width - radius, y);
-        this.quadraticCurveTo(x + width, y, x + width, y + radius);
-        this.lineTo(x + width, y + height - radius);
-        this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-        this.lineTo(x + radius, y + height);
-        this.quadraticCurveTo(x, y + height, x, y + height - radius);
-        this.lineTo(x, y + radius);
-        this.quadraticCurveTo(x, y, x + radius, y);
-        this.closePath();
-    };
-
     [merchantName, upiId, amount].forEach(input => {
         input.addEventListener('input', generateQR);
     });
 });
+</script>
