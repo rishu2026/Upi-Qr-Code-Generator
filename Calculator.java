@@ -21,8 +21,8 @@ public class Calculator {
 
     public static void main(String[] args) {
 
-        int a = 10;
-        int b = 5;
+        int a = 100;
+        int b = 556;
 
         System.out.println("Addition: " + add(a, b));
         System.out.println("Subtraction: " + subtract(a, b));
